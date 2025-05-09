@@ -1,0 +1,81 @@
+
+<div class="row list-countries">
+  <div class="col-12">
+    <div class="row">
+      <div class="col-md-5 col-12">
+        @if(subRegions$ | async; as subregionsList){
+          <select
+            name="subregions"
+            class="form-control"
+            [(ngModel)] = "subRegionSelected"
+            (change)="filterCountries()"
+            placeholder="Seleccione una region"
+          >
+            @for (region of subregionsList; track region) {
+              <option [value]="region">{{region}}</option>
+            }
+          </select>
+        }
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-5 col-12">
+        <div class="row mt-4 mb-4">
+          <div class="col-12">
+            <span class="h1">
+              Countries
+            </span>
+          </div>
+        </div>
+
+        <div class="row border rounded pt-2">
+          <div class="col-12 list-countries__drop-list">
+            @if(loadCountries){
+              @for (country of listCountries; track country.name) {
+                <div class="row g-0 list-countries__drop-list__country border mb-4 p-2">
+                  <div class="col-3">
+                    <img class="img-fluid" [src]="country.flag" [alt]="country.name">
+                  </div>
+                  <div class="col-9 text-center align-content-center">
+                    <span>{{country.name}}</span>
+                  </div>
+                </div>
+              }
+            } @else {
+              <div class="row justify-content-center text-align-center p-4">
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+        <div class="offset-md-2 col-md-5 col-12">
+          <div class="row mt-4 mb-4">
+            <div class="col-12">
+              <span class="h1">
+                Countries to Visit
+              </span>
+            </div>
+          </div>
+          <div class="row border rounded pt-2">
+            <div class="col-12 list-countries__drop-list">
+                @for (country of listCountriesToVisit; track country.name) {
+                  <div class="row g-0 list-countries__drop-list__country border mb-4 p-2">
+                    <div class="col-3">
+                      <img class="img-fluid" [src]="country.flag" [alt]="country.name">
+                    </div>
+                    <div class="col-9 text-center align-content-center">
+                      <span>{{country.name}}</span>
+                    </div>
+                  </div>
+                }
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>

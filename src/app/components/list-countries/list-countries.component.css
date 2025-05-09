@@ -1,0 +1,13 @@
+.list-countries__drop-list {
+  min-height: 300px;
+}
+
+.list-countries__drop-list__country {
+  height: 60px;
+  cursor: grab;
+}
+
+.list-countries__drop-list__country img {
+  height: 58px;
+  width: 80px;
+}
