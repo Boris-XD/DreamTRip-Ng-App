@@ -1,6 +1,20 @@
-
-<div class="row list-countries">
+<div class="row list-countries rounded border bg-light p-3">
   <div class="col-12">
+
+    <div class="row mb-2 mt-2 rounded">
+      <div class="col-12">
+        @defer{
+          <app-map-country [markers]="markers"></app-map-country>
+        } @loading {
+          <div class="row justify-content-center align-items-center h-100">
+            <div class="col-12 spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-md-5 col-12">
         @if(subRegions$ | async; as subregionsList){
@@ -29,22 +43,29 @@
           </div>
         </div>
 
-        <div class="row border rounded pt-2">
-          <div class="col-12 list-countries__drop-list">
+        <div class="row border rounded pt-2 bg-white">
+          <div
+            id="listCountries"
+            cdkDropList
+            #lCountries="cdkDropList"
+            [cdkDropListData]="listCountries"
+            [cdkDropListConnectedTo]="[lCountriesToVisit]"
+            (cdkDropListDropped)="drop($event)"
+            class="col-12 list-countries__drop-list"
+          >
             @if(loadCountries){
               @for (country of listCountries; track country.name) {
-                <div class="row g-0 list-countries__drop-list__country border mb-4 p-2">
-                  <div class="col-3">
-                    <img class="img-fluid" [src]="country.flag" [alt]="country.name">
-                  </div>
-                  <div class="col-9 text-center align-content-center">
-                    <span>{{country.name}}</span>
-                  </div>
+                <div cdkDrag>
+                  <ng-container
+                    [ngTemplateOutlet]="templateCountry"
+                    [ngTemplateOutletContext]="{ $implicit: country}"
+                    >
+                  </ng-container>
                 </div>
               }
             } @else {
-              <div class="row justify-content-center text-align-center p-4">
-                <div class="spinner-border" role="status">
+              <div class="row justify-content-center align-items-center h-100">
+                <div class="col-12 spinner-border" role="status">
                   <span class="visually-hidden">Loading...</span>
                 </div>
               </div>
@@ -61,21 +82,44 @@
               </span>
             </div>
           </div>
-          <div class="row border rounded pt-2">
-            <div class="col-12 list-countries__drop-list">
+          <div class="row border rounded pt-2 bg-white">
+            <div
+              id="listCountriesToVisit"
+              cdkDropList
+              #lCountriesToVisit="cdkDropList"
+              [cdkDropListData]="listCountriesToVisit"
+              [cdkDropListConnectedTo]="[lCountries]"
+              (cdkDropListDropped)="drop($event)"
+              class="col-12 list-countries__drop-list"
+            >
                 @for (country of listCountriesToVisit; track country.name) {
-                  <div class="row g-0 list-countries__drop-list__country border mb-4 p-2">
-                    <div class="col-3">
-                      <img class="img-fluid" [src]="country.flag" [alt]="country.name">
-                    </div>
-                    <div class="col-9 text-center align-content-center">
-                      <span>{{country.name}}</span>
-                    </div>
+                  <div cdkDrag>
+                    <ng-container
+                      [ngTemplateOutlet]="templateCountry"
+                      [ngTemplateOutletContext]="{ $implicit: country}"
+                      >
+                    </ng-container>
                   </div>
                 }
             </div>
           </div>
         </div>
       </div>
+
+      <ng-template #templateCountry let-country>
+        @defer (on viewport) {
+          <div class="row g-0 list-countries__drop-list__country border mb-4 p-2">
+            <div class="col-3">
+              <img class="img-fluid" [src]="country.flag" [alt]="country.name">
+            </div>
+            <div class="col-9 text-center align-content-center">
+              <span>{{country.name}}</span>
+            </div>
+          </div>
+        } @placeholder {
+          <span class="b-block">Loading...</span>
+        }
+      </ng-template>
+
   </div>
 </div>

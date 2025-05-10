@@ -1,0 +1,13 @@
+<google-map
+  [center]="center"
+  [zoom]="2"
+  width="100%"
+  height="500px"
+  mapId="trips"
+>
+  @for (marker of markers; track marker) {
+    <map-advanced-marker
+      [position]="marker"
+    />
+  }
+</google-map>
